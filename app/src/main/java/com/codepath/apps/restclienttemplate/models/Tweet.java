@@ -1,7 +1,13 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.text.format.DateUtils;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Tweet {
     private String body;
@@ -30,11 +36,25 @@ public class Tweet {
         return uid;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
     public User getUser() {
         return user;
+    }
+
+    // parse created time to show what time it was created at
+    public String getRelativeTimeAgo() {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(createdAt).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }

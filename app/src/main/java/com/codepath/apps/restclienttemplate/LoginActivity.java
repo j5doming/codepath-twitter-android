@@ -33,7 +33,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		task.execute(sampleModel);
 	}
 
-
 	// Inflate the menu; this adds items to the action bar if it is present.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -45,7 +44,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
 		 Intent i = new Intent(this, TimelineActivity.class);
 		 startActivity(i);
 	}

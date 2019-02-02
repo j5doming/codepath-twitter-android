@@ -3,7 +3,6 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         Tweet tweet = tweets.get(position);
         holder.tvBody.setText(tweet.getBody());
         holder.tvScreenName.setText(tweet.getUser().getScreenName());
+        holder.tvName.setText(tweet.getUser().getName());
+        holder.tvTime.setText(tweet.getRelativeTimeAgo());
         Glide.with(context).load(tweet.getUser().getProfileImageURL()).into(holder.ivProfileImage);
     }
 
@@ -48,11 +49,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     }
 
 
+    // clear current data from Recycler View
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+
+    // add a list of items
+    public void addTweets(List<Tweet> tweets) {
+        this.tweets.addAll(tweets);
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
         TextView tvScreenName;
         TextView tvBody;
+        TextView tvName;
+        TextView tvTime;
 
 
         public ViewHolder(View itemView) {
@@ -60,7 +75,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
-
+            tvName = itemView.findViewById(R.id.tvName);
+            tvTime = itemView.findViewById(R.id.tvTime);
 
         }
     }

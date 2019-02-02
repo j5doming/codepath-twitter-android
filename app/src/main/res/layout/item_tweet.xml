@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -11,6 +12,7 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginRight="5dp"
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <TextView
@@ -18,7 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/tvName"
         android:text="TextView"
         tools:text="Twitter Handle" />
 
@@ -30,5 +34,22 @@
         android:layout_toEndOf="@+id/ivProfileImage"
         android:text="TextView"
         tools:text="This is my tweet" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:text="TexView"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_toEndOf="@+id/tvScreenName"
+        android:text="TextView"
+        tools:text="10h" />
 
 </RelativeLayout>

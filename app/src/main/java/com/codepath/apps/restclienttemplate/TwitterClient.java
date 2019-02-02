@@ -3,11 +3,13 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
-import com.github.scribejava.apis.FlickrApi;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+import static com.codepath.apps.restclienttemplate.Constants.REST_CONSUMER_KEY;
+import static com.codepath.apps.restclienttemplate.Constants.REST_CONSUMER_SECRET;
 
 /*
  * 
@@ -24,8 +26,6 @@ import com.loopj.android.http.RequestParams;
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance();
 	public static final String REST_URL = "https://api.twitter.com/1.1";
-	public static final String REST_CONSUMER_KEY = "TkpX9Dc47U8CjVH80IEGDzhSJ";
-	public static final String REST_CONSUMER_SECRET = "uP4MuPQ3LKTlxR98BghiNQvi1l4Gg2orWeQtnnMOT2dzjEqHTl";
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -41,7 +41,7 @@ public class TwitterClient extends OAuthBaseClient {
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	// CHANGE THIS
+
 	// DEFINE METHODS for different API endpoints here
 	public void getHomeTimeline(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
