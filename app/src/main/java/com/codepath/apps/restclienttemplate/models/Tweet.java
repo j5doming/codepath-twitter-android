@@ -40,8 +40,12 @@ public class Tweet {
         return user;
     }
 
+    public String getCreatedAt() {
+        return getRelativeTimeAgo();
+    }
+
     // parse created time to show what time it was created at
-    public String getRelativeTimeAgo() {
+    private String getRelativeTimeAgo() {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
@@ -49,8 +53,9 @@ public class Tweet {
         String relativeDate = "";
         try {
             long dateMillis = sf.parse(createdAt).getTime();
+
             relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString();
         } catch (ParseException e) {
             e.printStackTrace();
         }

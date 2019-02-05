@@ -1,8 +1,12 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
@@ -13,27 +17,36 @@ import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
+    private ConnectivityManager connectivityManager;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		final SampleModel sampleModel = new SampleModel();
-		sampleModel.setName("CodePath");
+		// TODO - use connectivityManager to check if network is connected before attempting login
+		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		final SampleModelDao sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
+        final SampleModel sampleModel = new SampleModel();
+        sampleModel.setName("CodePath");
+        final SampleModelDao sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
+        AsyncTask<SampleModel, Void, Void> task = new AsyncTask<SampleModel, Void, Void>() {
+            @Override
+            protected Void doInBackground(SampleModel... sampleModels) {
+                sampleModelDao.insertModel(sampleModels);
+                return null;
+            }
 
-		AsyncTask<SampleModel, Void, Void> task = new AsyncTask<SampleModel, Void, Void>() {
-			@Override
-			protected Void doInBackground(SampleModel... sampleModels) {
-				sampleModelDao.insertModel(sampleModels);
-				return null;
-			};
-		};
-		task.execute(sampleModel);
+            ;
+        };
+        task.execute(sampleModel);
+
+
 	}
 
-	// Inflate the menu; this adds items to the action bar if it is present.
+
+
+    // Inflate the menu; this adds items to the action bar if it is present.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.login, menu);
@@ -44,9 +57,14 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
-		 Intent i = new Intent(this, TimelineActivity.class);
-		 startActivity(i);
+//        if ( connectedToNetwork(connectivityManager) ) {
+            Log.d("TwitterClientOpened", "Determined Network was connected");
+            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, TimelineActivity.class);
+            startActivity(i);
+//        } else {
+            Toast.makeText(this, "Error! Not connected to the internet", Toast.LENGTH_LONG).show();
+//        }
 	}
 
 	// OAuth authentication flow failed, handle the error
@@ -62,5 +80,12 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	public void loginToRest(View view) {
 		getClient().connect();
 	}
+
+//    // check if the device is connected to network before attempting a login
+//    private boolean connectedToNetwork(ConnectivityManager connectivityManager) {
+//        Log.d("TwitterClientOpened", "Checking if network is connected");
+//        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+//        return networkInfo != null && networkInfo.isConnected();
+//    }
 
 }

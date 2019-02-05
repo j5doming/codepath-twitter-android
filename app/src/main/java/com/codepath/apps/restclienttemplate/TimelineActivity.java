@@ -26,6 +26,7 @@ public class TimelineActivity extends AppCompatActivity {
     private TweetAdapter adapter;
     private List<Tweet> tweets;
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +35,27 @@ public class TimelineActivity extends AppCompatActivity {
 
         client = TwitterApp.getRestClient(this);
         swipeContainer = findViewById(R.id.swipeContainer);
+
         // find recycler view
         rvTweets = findViewById(R.id.rvTweets);
+
         // init list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetAdapter(this, tweets);
+
         // set up Recycler View
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadMoreData();
+            }
+        };
+
+        rvTweets.addOnScrollListener(scrollListener);
 
         populateHomeTimeline();
 
@@ -59,6 +73,22 @@ public class TimelineActivity extends AppCompatActivity {
                 getResources().getColor(android.R.color.holo_orange_light),
                 getResources().getColor(android.R.color.holo_red_light)
         );
+    }
+
+
+    // this is where android docs say to perform heavy-load shutdown operations such as save
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // TODO - add database features to persist when offline
+    }
+
+    public void loadMoreData() {
+        Log.d("scrollListener", "loadMoreData() called");
+        // 1. Send an API request to retrieve appropriate paginated data
+        // 2. Deserialize and construct new model objects from the API response
+        // 3. Append the new data objects to the existing set of items inside the array of items
+        // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
 
     // set up r view: set layout manager and adapater

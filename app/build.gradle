@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "com.codepath.apps.restclienttemplate"
@@ -35,10 +34,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: '*.jar')
     implementation 'com.codepath.libraries:android-oauth-handler:1.3.1'
     implementation 'com.android.support:appcompat-v7:27.1.0'
-    // Glide for remote image loading
+    // Glide for remote image loading and for transformations
     implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.1'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+
     // Android Async Http for sending async network requests
     implementation 'com.loopj.android:android-async-http:1.4.9'
+
     // Room for simple persistence with an ORM
     implementation "android.arch.persistence.room:runtime:1.0.0"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'

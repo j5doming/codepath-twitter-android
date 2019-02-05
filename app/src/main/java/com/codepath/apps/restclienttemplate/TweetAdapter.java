@@ -10,11 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
+import static com.bumptech.glide.request.RequestOptions.bitmapTransform;
+
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
+
+    private static final int RADIUS = 30;
+    private static final int MARGIN = 10;
 
     private Context context;
     private List<Tweet> tweets;
@@ -37,10 +45,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         // bind values based on position of the elements
         Tweet tweet = tweets.get(position);
         holder.tvBody.setText(tweet.getBody());
-        holder.tvScreenName.setText(tweet.getUser().getScreenName());
+        holder.tvScreenName.setText("@" + tweet.getUser().getScreenName());
         holder.tvName.setText(tweet.getUser().getName());
-        holder.tvTime.setText(tweet.getRelativeTimeAgo());
-        Glide.with(context).load(tweet.getUser().getProfileImageURL()).into(holder.ivProfileImage);
+        holder.tvTime.setText(tweet.getCreatedAt());
+        Glide.with(context).load(tweet.getUser().getProfileImageURL())
+                .apply(RequestOptions.circleCropTransform())
+                .into(holder.ivProfileImage);
     }
 
     @Override
