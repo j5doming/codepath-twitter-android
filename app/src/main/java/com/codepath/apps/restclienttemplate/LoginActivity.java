@@ -27,20 +27,24 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		// TODO - use connectivityManager to check if network is connected before attempting login
 		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        final SampleModel sampleModel = new SampleModel();
-        sampleModel.setName("CodePath");
-        final SampleModelDao sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
-        AsyncTask<SampleModel, Void, Void> task = new AsyncTask<SampleModel, Void, Void>() {
-            @Override
-            protected Void doInBackground(SampleModel... sampleModels) {
-                sampleModelDao.insertModel(sampleModels);
-                return null;
-            }
+//		if ( connectedToNetwork(connectivityManager) ) {
+		    Log.d("LoginActivity", "Detected internet connection");
+            // do something
+            final SampleModel sampleModel = new SampleModel();
+            sampleModel.setName("CodePath");
+            final SampleModelDao sampleModelDao = ((TwitterApp) getApplicationContext()).getMyDatabase().sampleModelDao();
+            AsyncTask<SampleModel, Void, Void> task = new AsyncTask<SampleModel, Void, Void>() {
+                @Override
+                protected Void doInBackground(SampleModel... sampleModels) {
+                    sampleModelDao.insertModel(sampleModels);
+                    return null;
+                }
 
-            ;
-        };
-        task.execute(sampleModel);
+                ;
+            };
+            task.execute(sampleModel);
 
+//        } else Toast.makeText(this, "Error! Not connected to the internet", Toast.LENGTH_LONG).show();
 
 	}
 
@@ -57,14 +61,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-//        if ( connectedToNetwork(connectivityManager) ) {
-            Log.d("TwitterClientOpened", "Determined Network was connected");
-            Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(this, TimelineActivity.class);
-            startActivity(i);
-//        } else {
-            Toast.makeText(this, "Error! Not connected to the internet", Toast.LENGTH_LONG).show();
-//        }
+        Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, TimelineActivity.class);
+        startActivity(i);
 	}
 
 	// OAuth authentication flow failed, handle the error
@@ -83,7 +82,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 //    // check if the device is connected to network before attempting a login
 //    private boolean connectedToNetwork(ConnectivityManager connectivityManager) {
-//        Log.d("TwitterClientOpened", "Checking if network is connected");
+//        Log.d("LoginActivity", "Checking if network is connected");
 //        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 //        return networkInfo != null && networkInfo.isConnected();
 //    }

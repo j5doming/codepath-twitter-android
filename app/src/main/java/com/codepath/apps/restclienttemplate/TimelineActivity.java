@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,6 +22,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    private ActionBar actionBar;
+
     private TwitterClient client;
     private RecyclerView rvTweets;
     private TweetAdapter adapter;
@@ -32,6 +35,10 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        actionBar = getSupportActionBar();
+
+        actionBar.hide();
 
         client = TwitterApp.getRestClient(this);
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -91,7 +98,7 @@ public class TimelineActivity extends AppCompatActivity {
         // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
 
-    // set up r view: set layout manager and adapater
+    // set up r view: set layout manager and adapter
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
