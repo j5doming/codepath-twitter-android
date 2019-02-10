@@ -1,9 +1,9 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,8 +22,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
 
-    private ActionBar actionBar;
-
     private TwitterClient client;
     private RecyclerView rvTweets;
     private TweetAdapter adapter;
@@ -35,10 +33,6 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-
-        actionBar = getSupportActionBar();
-
-        actionBar.hide();
 
         client = TwitterApp.getRestClient(this);
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -63,6 +57,7 @@ public class TimelineActivity extends AppCompatActivity {
         };
 
         rvTweets.addOnScrollListener(scrollListener);
+        rvTweets.addItemDecoration(new DividerItemDecoration(rvTweets.getContext(), DividerItemDecoration.VERTICAL));
 
         populateHomeTimeline();
 

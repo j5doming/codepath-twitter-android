@@ -24,31 +24,38 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <RelativeLayout
-        android:id="@+id/clActionBarReplacement"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/swipeContainer"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/twitter_blue_50"
-        tools:layout_editor_absoluteX="1dp">
+        android:background="@color/twitter_blue"
+        android:theme="?attr/actionBarTheme" />
 
-        <ImageView
-            android:id="@+id/ivOwnProfileImage"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            tools:srcCompat="@tools:sample/avatars[1]" />
+    <ImageView
+        android:id="@+id/ivUserImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        tools:srcCompat="@tools:sample/avatars[7]" />
 
-        <TextView
-            android:id="@+id/tvHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            android:layout_toEndOf="@+id/ivOwnProfileImage"
-            android:text="Home" />
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvToolbarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="27dp"
+        android:layout_margin="5dp"
+        android:text="SimpleTwitterClient"
+        android:textColor="@color/light_gray"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toRightOf="@id/ivUserImage"
+        app:layout_constraintTop_toTopOf="@id/ivUserImage"
+        tools:layout_editor_absoluteY="2dp" />
 
 
 </android.support.constraint.ConstraintLayout>
