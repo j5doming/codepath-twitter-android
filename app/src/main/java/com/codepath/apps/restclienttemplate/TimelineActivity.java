@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -14,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,9 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
+
+    private static final String TAG = TimelineActivity.class.getName();
+    private static final int REQUEST_CODE_COMPOSE_ACTIVITY = 666;
 
     private TwitterClient client;
     private RecyclerView rvTweets;
@@ -52,6 +59,7 @@ public class TimelineActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.d(TAG, "Going to load more data onLoadMore(int page, int totalItemsCount, RecyclerView view)");
                 loadMoreData();
             }
         };
@@ -64,7 +72,7 @@ public class TimelineActivity extends AppCompatActivity {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Log.d("TwitterClient", "Content is being refreshed");
+                Log.d(TAG, "SwipeContainer refreshing content");
                 populateHomeTimeline();
             }
         });
@@ -78,6 +86,42 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // adds items to the action bar if it is present
+        Log.d(TAG, "onCreateOptionsMenu(Menu menu): Creating options menu and inflating content");
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if ( item.getItemId() == R.id.compose ) {
+            Log.d(TAG, "onOptionsItemSelection(MenuItem item): clicked on compose button, starting new intent");
+            Intent i = new Intent(this, ComposeActivity.class);
+            startActivityForResult(i, REQUEST_CODE_COMPOSE_ACTIVITY);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_COMPOSE_ACTIVITY && resultCode == RESULT_OK) {
+            Log.d(TAG, "onActivityResult(int requestCode, int resultCode, Intent data): Successfully returned from ComposeActivity");
+            // pull data from Intent data (pull the Tweet object) and manually place it into this activity
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
+
+            // update the recycler view to see the newly posted tweet
+            tweets.add(0, tweet);
+            adapter.notifyItemInserted(0);
+
+            // scroll to the top TODO - do we want this? Possibly no
+            rvTweets.smoothScrollToPosition(0);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     // this is where android docs say to perform heavy-load shutdown operations such as save
     @Override
     protected void onStop() {
@@ -86,7 +130,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     public void loadMoreData() {
-        Log.d("scrollListener", "loadMoreData() called");
+        Log.d(TAG, "loadMoreData(): going to load more data");
         // 1. Send an API request to retrieve appropriate paginated data
         // 2. Deserialize and construct new model objects from the API response
         // 3. Append the new data objects to the existing set of items inside the array of items

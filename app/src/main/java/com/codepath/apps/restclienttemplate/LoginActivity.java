@@ -15,7 +15,11 @@ import com.codepath.apps.restclienttemplate.models.SampleModel;
 import com.codepath.apps.restclienttemplate.models.SampleModelDao;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
+import java.util.logging.Logger;
+
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
+
+	private final static String TAG = LoginActivity.class.getName();
 
     private ConnectivityManager connectivityManager;
 
@@ -28,7 +32,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
 //		if ( connectedToNetwork(connectivityManager) ) {
-		    Log.d("LoginActivity", "Detected internet connection");
             // do something
             final SampleModel sampleModel = new SampleModel();
             sampleModel.setName("CodePath");
@@ -62,6 +65,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	public void onLoginSuccess() {
         Toast.makeText(this, "Login Success", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "Successful login from onLoginSuccess()");
         Intent i = new Intent(this, TimelineActivity.class);
         startActivity(i);
 	}
@@ -70,6 +74,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display an error dialog or toast
 	@Override
 	public void onLoginFailure(Exception e) {
+        Toast.makeText(this, "Error: Could not log in.", Toast.LENGTH_LONG).show();
+	    Log.e(TAG, "Unsuccessful login in onLoginFailure(Exception e)");
 		e.printStackTrace();
 	}
 
