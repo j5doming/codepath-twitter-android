@@ -6,16 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ComposeActivity">
 
+    <!-- TODO - change back to max tweet count -->
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:keepScreenOn="false"
         android:textAlignment="viewStart"
         android:theme="@style/TextLabel"
         app:counterEnabled="true"
-        app:counterMaxLength="140"
+        app:counterMaxLength="@integer/maxCharCount"
+        app:counterOverflowTextAppearance="@style/counterOverride"
         app:errorEnabled="true"
         app:hintEnabled="false"
         app:layout_constraintBottom_toTopOf="@+id/buttonTweet"

@@ -54,4 +54,27 @@
         android:text="TextView"
         tools:text="10h" />
 
+    <ImageButton
+        android:id="@+id/buttonRetweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tvBody"
+        android:backgroundTint="@color/screen_bg"
+        android:src="@drawable/ic_vector_retweet_stroke"
+        android:tint="@color/medium_gray" />
+
+    <ImageButton
+        android:id="@+id/buttonFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/buttonRetweet"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tvBody"
+        android:layout_marginLeft="40dp"
+        android:src="@drawable/ic_vector_heart_stroke"
+        android:backgroundTint="@color/screen_bg"
+        android:tint="@color/medium_gray"/>
+
 </RelativeLayout>

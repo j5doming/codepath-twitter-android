@@ -13,9 +13,10 @@ import java.util.Locale;
 @Parcel
 public class Tweet {
     private String body;
-    private long uid;
     private String createdAt;
     private User user;
+    private long id;
+    private boolean retweeted;
 
     public Tweet() {
     }
@@ -24,28 +25,13 @@ public class Tweet {
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
         tweet.body = jsonObject.getString("text");
-        tweet.uid = jsonObject.getLong("id");
+        tweet.id = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
 
         return tweet;
 
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public long getUid() {
-        return uid;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getCreatedAt() {
-        return getRelativeTimeAgo();
     }
 
     // parse created time to show what time it was created at
@@ -65,5 +51,32 @@ public class Tweet {
         }
 
         return relativeDate;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getCreatedAt() {
+        return getRelativeTimeAgo();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) { this.retweeted = retweeted; }
+
+    @Override
+    public String toString() {
+        return "Tweet with id " + id + "[user: " + user + " created at: " + createdAt + "]";
     }
 }

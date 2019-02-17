@@ -36,9 +36,6 @@ public class ComposeActivity extends AppCompatActivity {
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.buttonTweet);
 
-
-//        etCompose.
-
         // set click listener for the button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override

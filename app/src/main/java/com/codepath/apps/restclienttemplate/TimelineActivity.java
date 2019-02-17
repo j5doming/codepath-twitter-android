@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -29,10 +30,12 @@ public class TimelineActivity extends AppCompatActivity {
     private static final String TAG = TimelineActivity.class.getName();
     private static final int REQUEST_CODE_COMPOSE_ACTIVITY = 666;
 
-    private TwitterClient client;
+    private TwitterClient twitterClient;
     private RecyclerView rvTweets;
+    private RelativeLayout itemTweet;
     private TweetAdapter adapter;
     private List<Tweet> tweets;
+
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
 
@@ -41,10 +44,9 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        client = TwitterApp.getRestClient(this);
+        twitterClient = TwitterApp.getRestClient(this);
         swipeContainer = findViewById(R.id.swipeContainer);
 
-        // find recycler view
         rvTweets = findViewById(R.id.rvTweets);
 
         // init list of tweets and adapter
@@ -122,29 +124,13 @@ public class TimelineActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    // this is where android docs say to perform heavy-load shutdown operations such as save
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // TODO - add database features to persist when offline
-    }
-
-    public void loadMoreData() {
-        Log.d(TAG, "loadMoreData(): going to load more data");
-        // 1. Send an API request to retrieve appropriate paginated data
-        // 2. Deserialize and construct new model objects from the API response
-        // 3. Append the new data objects to the existing set of items inside the array of items
-        // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
-    }
-
     // set up r view: set layout manager and adapter
     private void populateHomeTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
+        twitterClient.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
-                Log.d("TwitterClient", response.toString());
-
+                Log.i(TAG, "Success populating home time line.");
                 JSONObject jsonTweetObject;
                 Tweet tweet;
                 List<Tweet> tweetsToAdd = new ArrayList<>();
@@ -162,7 +148,6 @@ public class TimelineActivity extends AppCompatActivity {
 
                 adapter.clear();
                 adapter.addTweets(tweetsToAdd);
-
                 // stop showing refreshing icon
                 swipeContainer.setRefreshing(false);
             }
@@ -171,20 +156,31 @@ public class TimelineActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 swipeContainer.setRefreshing(false);
-                Log.e("TwitterClient", responseString);
+                Log.e(TAG, "error populating home timeline with status code " + statusCode + " and response string \"" + responseString +"\"");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 swipeContainer.setRefreshing(false);
-                Log.e("TwitterClient", errorResponse.toString());
+                Log.e(TAG, "error populating home timeline with status code " + statusCode, throwable);
             }
         });
     }
 
+    // this is where android docs say to perform heavy-load shutdown operations such as save
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // TODO - add database features to persist when offline
+    }
 
-
-
+    public void loadMoreData() {
+        Log.d(TAG, "loadMoreData(): going to load more data");
+        // 1. Send an API request to retrieve appropriate paginated data
+        // 2. Deserialize and construct new model objects from the API response
+        // 3. Append the new data objects to the existing set of items inside the array of items
+        // 4. Notify the adapter of the new items made with `notifyItemRangeInserted()`
+    }
 
 }

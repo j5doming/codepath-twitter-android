@@ -56,4 +56,5 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.11'
 
     implementation 'com.android.support:design:27.1.1'
+    implementation 'org.jetbrains:annotations-java5:15.0'
 }

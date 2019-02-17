@@ -1,7 +1,7 @@
 <resources>
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-    <!-- TODO - change to hide action bar <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+        <item name="colorPrimary">@color/twitter_blue</item>
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -14,13 +14,22 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
     
-    <style name="TextLabel">
+    <style name="TextLabel" xmlns:app="http://schemas.android.com/apk/res-auto">
         <item name="android:textColorHint">@color/medium_gray_30</item>
 
-        <item name="android:colorControlNormal">@color/inline_action</item>
+        <!-- Controls line colors -->
         <item name="android:colorControlActivated">@color/twitter_blue</item>
-        <item name="android:colorControlHighlight">@color/medium_red_50</item>
-        <!--<item name="android:colorAccent">@color/medium_gray_50</item>-->
+
+         <!--controls highlight color -->
+        <item name="android:colorAccent">@color/twitter_blue</item>
+    </style>
+    
+    <style name="counterText">
+        <item name="android:textColor">@color/twitter_blue</item>
+    </style>
+
+    <style name="counterOverride">
+        <item name="android:textColor">@color/medium_red</item>
     </style>
 
 </resources>
